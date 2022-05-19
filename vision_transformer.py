@@ -117,9 +117,8 @@ class VisionTransformer(nn.Module):
                                        n_embed=n_embed,
                                        n_heads=n_heads,
                                        n_layers=n_layers,
-                                       mlp_scale=mlp_scale
-                                       attn_mask=torch.triu(torch.full((block_size, block_size), float("-inf")), diagonal=1) if masked else None)
-
+                                       mlp_scale=mlp_scale)
+        
         self.ln_post = nn.LayerNorm(n_embed)
         self.reduce = Reduce("b n e -> b e", reduction="mean")
 
