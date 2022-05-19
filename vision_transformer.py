@@ -1,3 +1,5 @@
+!pip install einops
+
 import torch
 import torch.nn as nn
 
