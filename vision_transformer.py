@@ -104,7 +104,7 @@ class Transformer(nn.Module):
 #and https://github.com/openai/CLIP/blob/main/clip/model.py 
 #vision transformer is just transformer encoder with cony layer to proccess images 
 class VisionTransformer(nn.Module):
-    def __init__(self, n_heads, n_layers, in_channels, patch_size, n_embed, img_size, n_class=None, mlp_scale=4):
+    def __init__(self, n_heads, n_layers, in_channels, patch_size, n_embed, img_size, n_class=None, mlp_scale=4, masked=False):
         super().__init__()
 
         self.projection = nn.Sequential(
@@ -113,7 +113,12 @@ class VisionTransformer(nn.Module):
         )
 
         self.cls_token = nn.Parameter(torch.randn(1, 1, n_embed))
-        self.transformer = Transformer((img_size // patch_size) ** 2 + 1, n_embed=n_embed, n_heads=n_heads, n_layers=n_layers, mlp_scale=mlp_scale)
+        self.transformer = Transformer((img_size // patch_size) ** 2 + 1, 
+                                       n_embed=n_embed,
+                                       n_heads=n_heads,
+                                       n_layers=n_layers,
+                                       mlp_scale=mlp_scale
+                                       attn_mask=torch.triu(torch.full((block_size, block_size), float("-inf")), diagonal=1) if masked else None)
 
         self.ln_post = nn.LayerNorm(n_embed)
         self.reduce = Reduce("b n e -> b e", reduction="mean")
