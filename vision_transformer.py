@@ -12,6 +12,7 @@ from torch.nn import functional as F
 from tqdm import tqdm
 from torch.optim import AdamW
 from IPython.display import clear_output
+from torch.optim import AdamW
 
 #GLU Variant https://arxiv.org/abs/2002.05202
 #SwiGLU https://github.com/lucidrains/PaLM-pytorch/blob/main/palm_pytorch/palm_pytorch.py
@@ -137,7 +138,7 @@ class VisionTransformer(nn.Module):
         return x
 
 
-img = Image.open("niko.png")
+img = Image.open("img.png")
 
 transform = Compose([Resize((224, 224)), ToTensor()])
 x = transform(img).unsqueeze(0)
@@ -147,5 +148,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model = VisionTransformer(n_heads=6, n_layers=6, in_channels=3, patch_size=16, n_embed=768, img_size=224)
 model.to(device)
 model.train()
+
+optimizer = AdamW(model.parameters(), lr=3e-4)
 
 print(model(x.to(device)).shape)
