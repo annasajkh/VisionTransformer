@@ -129,7 +129,7 @@ class VisionTransformer(nn.Module):
 
         x = torch.cat([cls_tokens, x], dim=1)
         x = self.transformer(x)
-        x = self.in_post(self.reduce(x))
+        x = self.ln_post(self.reduce(x))
 
         if self.n_class != None:
             x = self.out_head(x)
@@ -137,7 +137,7 @@ class VisionTransformer(nn.Module):
         return x
 
 
-img = Image.open("")
+img = Image.open("niko.png")
 
 transform = Compose([Resize((224, 224)), ToTensor()])
 x = transform(img).unsqueeze(0)
