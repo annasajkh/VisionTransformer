@@ -102,7 +102,7 @@ class Transformer(nn.Module):
 
 #modified version of https://towardsdatascience.com/implementing-visualttransformer-in-pytorch-184f9f16f632 
 #and https://github.com/openai/CLIP/blob/main/clip/model.py 
-#vision transformer is just transformer encoder with cony layer to proccess images 
+#vision transformer is just transformer encoder with conv layer to proccess images 
 class VisionTransformer(nn.Module):
     def __init__(self, n_heads, n_layers, in_channels, patch_size, n_embed, img_size, n_class=None, mlp_scale=4, masked=False):
         super().__init__()
