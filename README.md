@@ -1,2 +1,2 @@
 # VisionTransformer
-my implementation of vision transformer
+vision transformer
