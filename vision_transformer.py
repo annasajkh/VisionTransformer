@@ -12,15 +12,15 @@ from torch.optim import AdamW
 from IPython.display import clear_output
 from torch.optim import AdamW
 
-#GLU Variant https://arxiv.org/abs/2002.05202
-#SwiGLU https://github.com/lucidrains/PaLM-pytorch/blob/main/palm_pytorch/palm_pytorch.py
+# GLU Variant https://arxiv.org/abs/2002.05202
+# SwiGLU https://github.com/lucidrains/PaLM-pytorch/blob/main/palm_pytorch/palm_pytorch.py
 class SwiGLU(nn.Module):
     def forward(self, x):
         x, gate = x.chunk(2, dim=-1)
         return F.silu(gate) * x
 
 
-#NormFormer https://arxiv.org/abs/2110.09456
+# NormFormer https://arxiv.org/abs/2110.09456
 class TransformerBlock(nn.Module): 
     def __init__(
         self,
@@ -87,7 +87,7 @@ class Transformer(nn.Module):
                                                        resid_pdrop=resid_pdrop) for _ in range(n_layers)]) 
         self.ln_pre = nn.LayerNorm(n_embed)
         
-    #the input is an embbeding with this shape (batch, n_context, n_embed) 
+    # the input is an embbeding with this shape (batch, n_context, n_embed) 
     def forward(self, x):
         x = self.drop(x + self.pos_embed[:, :x.shape[1], :])
         x = self.ln_pre(x) 
@@ -98,9 +98,9 @@ class Transformer(nn.Module):
         
         return x
 
-#modified version of https://towardsdatascience.com/implementing-visualttransformer-in-pytorch-184f9f16f632 
-#and https://github.com/openai/CLIP/blob/main/clip/model.py 
-#vision transformer is just transformer encoder with conv layer to project the image
+# modified version of https://towardsdatascience.com/implementing-visualttransformer-in-pytorch-184f9f16f632 
+# and https://github.com/openai/CLIP/blob/main/clip/model.py 
+# vision transformer is just transformer encoder with conv layer to project the image
 class VisionTransformer(nn.Module):
     def __init__(self, n_heads, n_layers, in_channels, patch_size, n_embed, img_size, n_class=None, mlp_scale=4, masked=False):
         super().__init__()
